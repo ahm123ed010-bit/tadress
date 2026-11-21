@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تدريس — Tadris</title>
+<meta name="theme-color" content="#0f1f3d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<script>var L0=localStorage.getItem('moarekh_lang')||'ar';document.documentElement.lang=L0;document.documentElement.dir=L0==='en'?'ltr':'rtl';document.documentElement.dataset.theme=localStorage.getItem('moarekh_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--font-display:'Amiri',serif;--font-body:'IBM Plex Sans Arabic',sans-serif}
+:root {
+  --navy: #0f1f3d;
+  --navy-2: #182c52;
+  --gold: #c9a24b;
+  --gold-soft: #efe3c4;
+  --paper: #f7f5ef;
+  --card: #ffffff;
+  --ink: #1b2236;
+  --muted: #6b7388;
+  --line: #e3dfd2;
+  --danger: #b3382c;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+}
+h1, h2, h3 { font-family: var(--font-display), serif; margin: 0; line-height: 1.3; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* ---------- Login ---------- */
+.login { min-height: 100dvh; display: grid; grid-template-columns: 1.1fr 1fr; }
+.login-brand {
+  background: var(--navy); color: #fff; padding: 56px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.login-brand h1 { font-size: clamp(64px, 9vw, 120px); color: var(--gold); font-weight: 700; }
+.login-brand p { font-size: 20px; max-width: 22ch; color: #d9deea; margin: 0; }
+.login-brand small { color: #8f9bb8; }
+.login-form-wrap { display: grid; place-items: center; padding: 32px; }
+.login-form { width: 100%; max-width: 380px; display: grid; gap: 18px; }
+.login-form h2 { font-size: 30px; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: 15px; }
+.field input {
+  font: inherit; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card); color: var(--ink); min-height: 48px;
+}
+.field input:focus { border-color: var(--gold); }
+.btn {
+  font: inherit; font-weight: 600; min-height: 48px; border: 0; border-radius: 8px;
+  background: var(--navy); color: #fff; cursor: pointer; padding: 0 20px;
+  transition: background .15s;
+}
+.btn:hover { background: var(--navy-2); }
+.btn:disabled { opacity: .6; cursor: wait; }
+.btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); min-height: 40px; }
+.btn-ghost:hover { background: var(--gold-soft); }
+.error { color: var(--danger); font-size: 14px; margin: 0; min-height: 22px; }
+
+/* ---------- Admin shell ---------- */
+.shell { min-height: 100dvh; display: grid; grid-template-columns: 250px 1fr; }
+.sidebar {
+  background: var(--navy); color: #cfd6e6; padding: 28px 20px;
+  display: flex; flex-direction: column; gap: 28px;
+  position: sticky; top: 0; height: 100dvh;
+}
+.sidebar .brand { font-family: var(--font-display), serif; font-size: 34px; color: var(--gold); font-weight: 700; }
+.sidebar nav { display: grid; gap: 4px; }
+.nav-item { padding: 10px 14px; border-radius: 8px; font-size: 16px; display: flex; justify-content: space-between; }
+.nav-item.active { background: var(--navy-2); color: #fff; border-inline-start: 3px solid var(--gold); }
+.nav-item.soon { color: #7d89a6; }
+.nav-item.soon small { font-size: 12px; }
+.sidebar-foot { margin-top: auto; display: grid; gap: 10px; font-size: 14px; }
+.sidebar-foot .btn-ghost { color: #fff; border-color: #34466b; }
+.sidebar-foot .btn-ghost:hover { background: var(--navy-2); }
+
+.main { padding: 32px clamp(16px, 4vw, 48px); max-width: 1200px; width: 100%; }
+.main > header { margin-bottom: 24px; }
+.main > header h1 { font-size: 32px; }
+.main > header p { margin: 4px 0 0; color: var(--muted); }
+
+/* the one memorable element: today band */
+.today {
+  background: var(--navy); color: #fff; border-radius: 14px; padding: 28px 32px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 28px;
+}
+.today div + div { border-inline-start: 1px solid #2a3d63; padding-inline-start: 24px; }
+.today .num { font-family: var(--font-display), serif; font-size: clamp(40px, 6vw, 64px); color: var(--gold); line-height: 1; }
+.today .lbl { color: #cfd6e6; margin-top: 6px; }
+
+.facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-bottom: 28px;
+  border-block: 1px solid var(--line); }
+.facts div { padding: 18px 8px; }
+.facts div + div { border-inline-start: 1px solid var(--line); padding-inline-start: 20px; }
+.facts b { font-size: 26px; display: block; font-family: var(--font-display), serif; }
+.facts span { color: var(--muted); font-size: 14px; }
+
+.grid2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; }
+.panel h2 { font-size: 22px; margin-bottom: 12px; }
+.panel ul { list-style: none; padding: 0; margin: 0; }
+.panel li { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.panel li small { display: block; color: var(--muted); }
+.empty { color: var(--muted); padding: 12px 0; }
+
+.bars { display: flex; align-items: flex-end; gap: 10px; height: 160px; padding-top: 8px; }
+.bar { flex: 1; display: grid; gap: 6px; justify-items: center; align-content: end; height: 100%; font-size: 13px; color: var(--muted); }
+.bar i { display: block; width: 100%; background: var(--gold); border-radius: 4px 4px 0 0; min-height: 3px; }
+.bar b { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 860px) {
+  .login { grid-template-columns: 1fr; }
+  .login-brand { padding: 28px; gap: 12px; }
+  .login-brand h1 { font-size: 56px; }
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 16px; gap: 12px; }
+  .sidebar nav { display: none; }
+  .sidebar-foot { margin: 0 auto 0 0; margin-inline-start: auto; grid-auto-flow: column; align-items: center; }
+  .today { grid-template-columns: 1fr; padding: 22px; }
+  .today div + div { border-inline-start: 0; padding-inline-start: 0; border-top: 1px solid #2a3d63; padding-top: 16px; }
+  .facts { grid-template-columns: 1fr 1fr; }
+  .facts div:nth-child(3) { border-inline-start: 0; padding-inline-start: 8px; }
+  .grid2 { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---------- حضور QR + انضباط ---------- */
+.att-grid{display:grid;grid-template-columns:minmax(280px,420px) 1fr;gap:26px;align-items:start}
+.qrcard{background:#fff;border-radius:16px;padding:14px;position:relative;width:min(100%,420px);margin:0 auto 12px}
+.qrcard img{display:block;width:100%;height:auto}
+.scanline{position:absolute;inset-inline:18px;top:20px;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);box-shadow:0 0 14px var(--gold);animation:sweep 2.2s ease-in-out infinite alternate}
+@keyframes sweep{to{top:calc(100% - 23px)}}
+.qr-full{position:fixed;inset:0;z-index:50;background:#fff;display:grid;place-items:center;padding:20px;cursor:zoom-out}
+.qr-full .qrcard{width:min(92vmin,900px);box-shadow:none;margin:0}
+.livedot{display:inline-flex;align-items:center;gap:8px;color:#1f6b34;font-weight:600;margin:6px 0 12px}
+.livedot i{width:10px;height:10px;border-radius:50%;background:#1f6b34;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #1f6b34}100%{box-shadow:0 0 0 10px transparent}}
+.bigcount{font:700 54px/1 var(--font-display),serif;color:var(--gold)}
+.prog{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin:10px 0 14px}
+.prog i{display:block;height:100%;background:var(--gold);transition:width .6s}
+.stline{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.notice{padding:12px 14px;border-radius:10px;background:var(--gold-soft);margin:12px 0}
+.chk{display:flex;gap:8px;align-items:center;margin:12px 0}
+.row{display:flex;gap:8px;margin-bottom:8px}
+.sel{min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);font:inherit;color:inherit}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap}
+.hint{color:var(--muted);font-size:14px}
+.badge.warn{background:var(--gold-soft);color:#6b4e0e}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+@media(max-width:860px){.att-grid,.g2{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.scanline,.livedot i{animation:none}}
+.page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.page-head h1 { font-size: 32px; }
+.page-head p { margin: 4px 0 0; color: var(--muted); }
+.link { color: var(--navy); font-weight: 600; border-bottom: 1px solid var(--gold); }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+table { width: 100%; border-collapse: collapse; min-width: 640px; }
+th, td { text-align: start; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-weight: 600; color: var(--muted); font-size: 14px; background: var(--paper); }
+tbody tr:last-child td { border-bottom: 0; }
+td small { display: block; color: var(--muted); }
+
+.badge { padding: 2px 10px; border-radius: 999px; font-size: 13px; }
+.badge.ok { background: #e3f1e6; color: #1f6b34; }
+.badge.off { background: #f3e1de; color: var(--danger); }
+
+.btn-sm { min-height: 36px; padding: 0 12px; font-size: 14px; }
+.row-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+details.add { position: relative; }
+details.add > summary { list-style: none; display: inline-flex; align-items: center; cursor: pointer; }
+details.add > summary::-webkit-details-marker { display: none; }
+.form-grid {
+  position: absolute; inset-inline-end: 0; z-index: 5; margin-top: 8px; width: min(420px, 92vw);
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px;
+  display: grid; gap: 12px; box-shadow: 0 12px 32px rgba(15, 31, 61, .14);
+}
+
+.search { display: flex; gap: 8px; margin-bottom: 16px; max-width: 460px; }
+.search input, .inline-form select {
+  font: inherit; flex: 1; min-height: 40px; padding: 0 12px; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--card);
+}
+.inline-form { display: flex; gap: 8px; margin-bottom: 8px; }
+.member { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.member small { display: inline; margin-inline-start: 8px; }
+.at{max-width:520px;margin:0 auto;padding:18px 16px 40px;display:grid;gap:16px}
+.at-head{background:var(--navy);color:#fff;border-radius:16px;padding:20px 22px}
+.at-head h1{font-size:30px;color:var(--gold)}.at-head p{margin:4px 0 0;color:#cfd6e6;font-size:15px}
+.at-chips{display:flex;gap:8px;flex-wrap:wrap}
+.at-chip{padding:4px 12px;border-radius:999px;font-size:14px;background:#e3f1e6;color:#1f6b34}
+.at-chip.off{background:#f3e1de;color:#b3382c}.at-chip.q{background:var(--gold-soft);color:#6b4e0e}
+.at-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:12px}
+.at-cam{position:relative;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:1}
+.at-cam video{width:100%;height:100%;object-fit:cover;display:block}
+.at-cam::after{content:"";position:absolute;inset:14%;border:3px solid var(--gold);border-radius:18px;box-shadow:0 0 0 999px rgba(0,0,0,.35);pointer-events:none}
+.at-field{display:grid;gap:6px}.at-field label{font-weight:600}
+.at-field input{font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:8px;min-height:48px;background:var(--card);color:var(--ink)}
+.at-res{display:grid;gap:8px;list-style:none;padding:0;margin:0}
+.at-res li{padding:10px 12px;border-radius:10px;font-size:15px}
+.at-res li.ok{background:#e3f1e6;color:#1f6b34}.at-res li.bad{background:#f8e4e1;color:#b3382c}
+.at-res small{display:block;opacity:.8}
+
+/* ---------- إضافات النسخة C# ---------- */
+:root { --font-body: "IBM Plex Sans Arabic", system-ui, sans-serif; --font-display: "Amiri", Georgia, serif; --ok: #1f6b34; --okbg: #e3f1e6; --offbg: #f3e1de; }
+.flash { padding: 12px 14px; border-radius: 10px; margin-bottom: 16px; }
+.flash.ok { background: var(--okbg); color: var(--ok); }
+.flash.bad { background: var(--offbg); color: var(--danger); }
+.field select, .field textarea { font: inherit; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); min-height: 48px; width: 100%; }
+.field textarea { min-height: 96px; resize: vertical; }
+.field input[type=file] { padding: 10px; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+.stack { display: grid; gap: 14px; max-width: 560px; }
+.stack-wide { display: grid; gap: 14px; }
+.two { display: grid; grid-template-columns: 1fr 120px; gap: 10px; }
+.vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin-top: 22px; }
+.hwc { border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 16px; display: grid; gap: 8px; align-content: start; }
+.hwc small { color: var(--muted); display: block; }
+.vcard { border: 1px solid var(--line); border-radius: 12px; background: var(--card); overflow: hidden; }
+.vcard video { width: 100%; aspect-ratio: 16/9; display: block; background: var(--navy); }
+.vcard > div { padding: 12px 14px; }
+.vcard small { color: var(--muted); display: block; }
+.btn-link { display: inline-flex; align-items: center; text-decoration: none; }
+.inline { display: inline; }
+.inline-grade { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.inline-grade input { font: inherit; min-height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); }
+.inline-grade input[name=score] { width: 90px; }
+.inline-grade input[name=feedback] { flex: 1; min-width: 160px; }
+.score-in { width: 90px; font: inherit; min-height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); }
+.langbar { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.langbar a { padding: 2px 10px; border-radius: 999px; border: 1px solid #34466b; color: #cfd6e6; }
+.langbar a.on { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.nav-item.active { background: var(--navy-2); color: #fff; border-inline-start: 3px solid var(--gold); }
+.sidebar-foot a.small { color: #cfd6e6; font-size: 14px; text-decoration: underline; }
+.facts-3 { grid-template-columns: repeat(3, 1fr); }
+.up-prog { height: 8px; background: var(--line); border-radius: 8px; overflow: hidden; display: none; }
+.up-prog i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .2s; }
+.creds { background: var(--gold-soft); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; white-space: pre-line; }
+.unread { border-inline-start: 4px solid var(--gold); }
+.note { padding: 12px 14px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); margin-bottom: 10px; }
+.note.discipline { background: var(--offbg); border-color: transparent; }
+.sel-wide { width: 100%; }
+.wk li b { display: block; margin-bottom: 4px; }
+.err-box { color: var(--danger); min-height: 22px; font-size: 14px; margin: 0; }
+.lang-login { position: absolute; top: 14px; inset-inline-end: 16px; }
+.lang-login a { padding: 2px 10px; border-radius: 999px; border: 1px solid var(--line); font-size: 14px; }
+.nav-toggle { display: none; }
+@media (max-width: 860px) { .sidebar nav { display: grid !important; grid-auto-flow: column; overflow-x: auto; width: 100%; order: 3; } .nav-item { white-space: nowrap; } .two { grid-template-columns: 1fr; } }
+
+[hidden] { display: none !important; }
+
+.fg{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));align-items:end}
+.field select,.field textarea,.field input{font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-height:46px;width:100%}
+.main .panel{margin-bottom:20px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:start}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.inline-form{display:flex;gap:6px}
+@media(max-width:800px){.shell{grid-template-columns:1fr!important}.sidebar{position:static!important;height:auto!important}}
+
+.field input[type=radio]{width:auto;min-height:0;margin-inline-end:6px}
+.field input[type=file]{padding:8px}
+html[data-theme=dark]{--paper:#10141f;--card:#1a2030;--ink:#e8eaf0;--muted:#9aa3b8;--line:#2c3447;--gold-soft:#3a3320;--okbg:#173222;--offbg:#3a1f1c;--ok:#6fd08a;--danger:#ff8b7d;--navy:#1d3463;--navy-2:#2a4680;color-scheme:dark}
+html[data-theme=dark] .link{color:var(--gold)}
+html[data-theme=dark] body{background:var(--paper);color:var(--ink)}
+#tb{position:fixed;top:10px;inset-inline-end:10px;z-index:60;display:flex;gap:6px}
+.offbox{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px;width:min(100%,420px)}.offbox input{font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}.offbox h3{margin:0}
+.sheetimgs img{max-width:100%;border-radius:8px;margin-bottom:10px;border:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div id="tb"><button id="tt" class="btn btn-sm" title="الوضع الليلي">🌓</button><button id="lg" class="btn btn-sm">EN</button></div>
+<div id="root"></div>
+<script>
+const K='moarekh_db_v1',SS='moarekh_me',DAYS=['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
+const SB_URL='',SB_KEY=''; // ← املأهم من Supabase (الخطوات في README). لو فاضيين الموقع بيشتغل محلي على الجهاز ده بس
+const ON=!!(SB_URL&&SB_KEY);
+const CO=['users','groups','ann','sched','hw','subs','exams','videos','lec','quiz','ans','cfg'];
+const db={};CO.forEach(c=>db[c]=[]);db.cfg=[{id:'rule',warn:2,expel:4}];
+let snap={},q=Promise.resolve();
+const snapOf=()=>{const o={};CO.forEach(c=>{o[c]={};db[c].forEach(x=>o[c][x.id]=JSON.stringify(x))});return o};
+const hd=()=>({apikey:SB_KEY,...(SB_KEY.startsWith('eyJ')?{Authorization:'Bearer '+SB_KEY}:{}),'Content-Type':'application/json'});
+async function pull(){await q;if(ON){const rows=[];for(let o=0;;o+=1000){const r=await fetch(`${SB_URL}/rest/v1/items?select=coll,id,data&order=coll,id&limit=1000&offset=${o}`,{headers:hd()});if(!r.ok)throw new Error('db');const p=await r.json();rows.push(...p);if(p.length<1000)break}
+ CO.forEach(c=>db[c]=[]);rows.forEach(r=>db[r.coll]&&db[r.coll].push(r.data))}else{const l=JSON.parse(localStorage.getItem(K)||'{}');CO.forEach(c=>l[c]&&(db[c]=l[c]))}
+ if(!db.cfg.length)db.cfg=[{id:'rule',warn:2,expel:4}];snap=snapOf();
+ if(me){const m=by(db.users,me.id);if(m&&m.active)me=m;else{me=null;localStorage.removeItem(SS)}}}
+function save(){if(!ON){localStorage.setItem(K,JSON.stringify(db));return}
+ const cur=snapOf(),up=[],dl=[];CO.forEach(c=>{db[c].forEach(x=>{if(snap[c][x.id]!==cur[c][x.id])up.push({coll:c,id:x.id,data:x})});Object.keys(snap[c]).forEach(id=>{if(!(id in cur[c]))dl.push([c,id])})});snap=cur;
+ q=q.then(async()=>{try{if(up.length)await fetch(`${SB_URL}/rest/v1/items?on_conflict=coll,id`,{method:'POST',headers:{...hd(),Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(up)});for(const[c,id]of dl)await fetch(`${SB_URL}/rest/v1/items?coll=eq.${c}&id=eq.${encodeURIComponent(id)}`,{method:'DELETE',headers:hd()})}catch{}})}
+async function upl(file,kind){if(!ON)throw new Error('رفع الملفات محتاج ربط Supabase (شوف README)');const p=`${kind}/${uid()}-${file.name.replace(/[^\w.-]/g,'_')}`;
+ const h={apikey:SB_KEY,...(SB_KEY.startsWith('eyJ')?{Authorization:'Bearer '+SB_KEY}:{}),'Content-Type':file.type||'application/octet-stream'};
+ const r=await fetch(`${SB_URL}/storage/v1/object/files/${p}`,{method:'POST',headers:h,body:file});if(!r.ok)throw new Error('فشل الرفع (الحد الأقصى 50MB للملف)');return `${SB_URL}/storage/v1/object/public/files/${p}`}
+const dist=(a,b,c,d)=>{const t=x=>x*Math.PI/180,u=t(c-a),v=t(d-b),h=Math.sin(u/2)**2+Math.cos(t(a))*Math.cos(t(c))*Math.sin(v/2)**2;return 12742e3*Math.asin(Math.sqrt(h))};
+let LANG=localStorage.getItem('moarekh_lang')||'ar',OFFL=false,inst=null;
+const PEND='moarekh_pend',RES='moarekh_res',WHO='moarekh_who';
+const LOGO=r=>`<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" width="100%"><rect width="512" height="512" rx="${r??112}" fill="#0f1f3d"/><path d="M256 96 388 156 256 216 124 156Z" fill="#efe3c4"/><path d="M190 196v44c0 22 132 22 132 0v-44l-66 30Z" fill="#c9a24b"/><path d="M388 156v66" stroke="#c9a24b" stroke-width="10" stroke-linecap="round"/><circle cx="388" cy="234" r="12" fill="#c9a24b"/><path d="M256 392C206 358 150 352 104 364v-80c46-12 102-6 152 28Z" fill="#c9a24b"/><path d="M256 392c50-34 106-40 152-28v-80c-46-12-102-6-152 28Z" fill="#e5c777"/><path d="M92 384c58-12 118-4 164 28 46-32 106-40 164-28" fill="none" stroke="#efe3c4" stroke-width="12" stroke-linecap="round"/></svg>`;
+const EN={"تدريس": "Tadris", "منصة المدرس والطالب": "Teacher & student platform", "إعداد أول مرة — حساب الأدمن": "First-time setup — Admin account", "تسجيل الدخول": "Sign in", "دخول": "Sign in", "الاسم": "Name", "اسم المستخدم": "Username", "كلمة المرور": "Password", "كلمة المرور (8 حروف+)": "Password (8+ characters)", "كلمة المرور (8+)": "Password (8+)", "إنشاء حساب الأدمن": "Create admin account", "خروج": "Sign out", "تغيير كلمة المرور": "Change password", "كلمة المرور الحالية": "Current password", "الجديدة (8+)": "New (8+)", "حفظ": "Save", "أدمن": "Admin", "مدرس": "Teacher", "طالب": "Student", "الأدمن": "Admins", "المدرسون": "Teachers", "الطلاب": "Students", "الطالب": "Student", "لوحة الأدمن": "Admin dashboard", "لوحة المدرس": "Teacher dashboard", "إعدادات الموقع": "Site settings", "المجموعات": "Groups", "الحضور": "Attendance", "الانضباط": "Discipline", "الواجبات": "Homework", "الامتحانات": "Exams", "الدرجات": "Grades", "الفيديوهات": "Videos", "الإعلانات": "Announcements", "الجدول": "Schedule", "الرئيسية": "Home", "واجباتي": "My homework", "درجاتي": "My grades", "تسجيل حضور": "Check in", "محاضرات اليوم": "Today's lectures", "مجموعات": "Groups", "إجابات تحتاج تصحيح": "Answers to grade", "تسليم الواجبات": "Homework submissions", "الواجب": "Homework", "المجموعة": "Group", "سلّم": "Submitted", "لسه": "Pending", "حالة الموقع": "Site status", "متصل بالسيرفر — البيانات مشتركة بين كل الأجهزة": "Connected to server — data is shared across all devices", "تخزين محلي على الجهاز ده بس — اربط Supabase (شوف README)": "Local storage on this device only — connect Supabase (see README)", "متصل بالسيرفر": "Connected to server", "تخزين محلي": "Local storage", "الحالة": "Status", "نطاق الموقع (متر)": "Location radius (m)", "بدء محاضرة وتحديد موقعي": "Start lecture & set my location", "كود الحضور": "Attendance code", "إنهاء الحضور": "End attendance", "انتهت": "Ended", "حاضر": "Present", "غائب": "Absent", "ابدأ محاضرة وأعطِ الطلاب الكود أو اعرض الـ QR": "Start a lecture and give students the code or show the QR", "الحضور مقيّد بالموقع": "Attendance is location-restricted", "من غير تقييد بالموقع": "No location restriction", "متر": "m", "إنذار بعد كم غياب": "Warn after N absences", "فصل بعد كم غياب": "Suspend after N absences", "حفظ القاعدة": "Save rule", "غيابات الشهر": "Absences this month", "مفصول": "Suspended", "يستحق الفصل": "Should be suspended", "إنذار": "Warning", "منتظم": "Regular", "فصل": "Suspend", "إرجاع": "Reinstate", "العنوان": "Title", "الوصف": "Description", "آخر موعد": "Due date", "نشر الواجب": "Publish homework", "الإجابة": "Answer", "الدرجة": "Grade", "حتى": "until", "تسليم الواجب": "Submit homework", "تسليم الامتحان": "Submit exam", "تسليم": "submissions", "لا توجد واجبات": "No homework", "تم التسليم. الدرجة": "Submitted. Grade", "لم تُصحح بعد": "Not graded yet", "تم التسليم": "Submitted", "اسم الاختبار": "Test name", "الدرجة النهائية": "Max score", "إضافة اختبار": "Add test", "حفظ الدرجات": "Save scores", "حذف": "Delete", "(من ": "(out of ", "البند": "Item", "امتحان": "Exam", "واجب": "Homework", "رابط الفيديو (اختياري)": "Video link (optional)", "أو ارفع فيديو من جهازك": "Or upload a video from your device", "إضافة": "Add", "مشاهدة الفيديو": "Watch video", "لا توجد فيديوهات": "No videos", "النص": "Text", "نشر الإعلان": "Publish announcement", "الكل": "All", "لا توجد إعلانات": "No announcements", "آخر الإعلانات": "Latest announcements", "آخر الفيديوهات": "Latest videos", "السبت": "Saturday", "الأحد": "Sunday", "الاثنين": "Monday", "الثلاثاء": "Tuesday", "الأربعاء": "Wednesday", "الخميس": "Thursday", "الجمعة": "Friday", "اليوم": "Day", "الساعة": "Time", "المكان": "Place", "كلمة مرور": "Password", "إضافة طالب": "Add student", "المستخدم": "User", "نشط": "Active", "موقوف": "Suspended", "إيقاف": "Suspend", "تفعيل": "Activate", "عدد الطلاب": "Students count", "اسم المجموعة": "Group name", "أهلاً": "Welcome", "نسبة الحضور": "Attendance rate", "متوسط الدرجات": "Average grade", "واجبات مطلوبة": "Homework due", "واجبات مفتوحة": "Open homework", "مواعيدي": "My schedule", "لا يوجد": "None", "امسح الـ QR اللي المدرس عارضه. لازم تسمح بالكاميرا والموقع.": "Scan the QR shown by the teacher. Allow camera and location access.", "مسح QR": "Scan QR", "أو اكتب الكود": "Or type the code", "تسجيل": "Register", "الامتحانات الأونلاين": "Online exams", "عنوان الامتحان": "Exam title", "تعليمات (اختياري)": "Instructions (optional)", "صوّر ورقة الامتحان أو ارفع صورها (تظهر للطالب)": "Photograph the exam paper or upload its images (shown to the student)", "عدد الأسئلة الاختيارية (أ ب ج د)": "Number of multiple-choice questions (A B C D)", "عدد الأسئلة المقالية": "Number of essay questions", "الإجابات الصحيحة للاختياري (اختياري) مثال: أ ب ج د": "Correct MCQ answers (optional) e.g. A B C D", "نشر الامتحان": "Publish exam", "إجابة": "answers", "الإجابات": "Answers", "إجابتك": "Your answer", "مفتوح": "Open", "مقفول": "Closed", "قفل": "Close", "فتح": "Open", "تلقائي": "Auto", "الامتحان مقفول": "Exam is closed", "لا توجد امتحانات": "No exams", "أ": "A", "ب": "B", "ج": "C", "د": "D", "تسجيل حضور بدون نت": "Check in without internet", "اكتب اسمك واسم المستخدم، وصوّر الـ QR. هيتأكد حضورك أول ما النت يرجع.": "Enter your name and username, then scan the QR. Your attendance is confirmed once you are back online.", "صوّر QR (بدون نت)": "Scan QR (offline)", "مفيش اتصال بالإنترنت. تقدر تسجل حضورك بالـ QR من تحت.": "No internet connection. You can still check in by scanning the QR below.", "تثبيت التطبيق على الشاشة": "Install app on home screen", "للتثبيت على الآيفون: مشاركة ← إضافة إلى الشاشة الرئيسية": "To install on iPhone: Share → Add to Home Screen", "تم تأكيد حضورك": "Attendance confirmed", "اسم المستخدم غير موجود": "Username not found", "الكود غير صحيح لمجموعتك": "Code is not valid for your group", "مكانك خارج نطاق المحاضرة": "You are outside the lecture area", "تم حفظ حضورك. هيتأكد أول ما النت يرجع.": "Saved. It will be confirmed once you are back online.", "اكتب اسمك واسم المستخدم الأول": "Enter your name and username first", "قارئ QR مش متاح دلوقتي. افتح الموقع مرة وانت متصل بالنت الأول.": "QR reader is not available. Open the site once while online first.", "الكاميرا مش شغالة — اسمح بيها": "Camera is not working — please allow access", "إلغاء": "Cancel", "تم الإنشاء، سجّل الدخول": "Created, please sign in", "محاولات كتير، استنى نص دقيقة": "Too many attempts, wait 30 seconds", "اسم المستخدم أو كلمة المرور غلط": "Wrong username or password", "الحساب موقوف": "Account suspended", "اعمل مجموعة الأول": "Create a group first", "بدأت المحاضرة وتم تحديد موقعك": "Lecture started and your location was set", "بدأت المحاضرة بدون تقييد موقع (فعّل GPS)": "Lecture started without location restriction (enable GPS)", "تم الحفظ": "Saved", "تم نشر الواجب": "Homework published", "تم حفظ الدرجة": "Grade saved", "انتهى موعد التسليم": "Submission deadline passed", "تم حفظ الدرجات": "Scores saved", "حط رابط أو اختار فيديو من جهازك": "Enter a link or choose a video from your device", "حدد عدد الأسئلة أو اكتبها": "Set the number of questions or type them", "تم نشر الامتحان": "Exam published", "مش متاح": "Not available", "تم تسليم الامتحان": "Exam submitted", "تم نشر الإعلان": "Announcement published", "الكود غلط أو الحضور مقفول": "Wrong code or attendance is closed", "فعّل الموقع (GPS) وحاول تاني": "Enable location (GPS) and try again", "انت بعيد عن مكان المحاضرة": "You are too far from the lecture location", "تم تسجيل حضورك": "Your attendance was recorded", "كلمة المرور الحالية غلط": "Current password is wrong", "الجديدة 8 حروف على الأقل": "New password must be 8+ characters", "كلمة المرور 8 حروف على الأقل": "Password must be 8+ characters", "تم تغيير كلمة المرور": "Password changed", "متأكد من الحذف؟": "Are you sure you want to delete?", "تم الحذف": "Deleted", "تم إنهاء الحضور": "Attendance ended", "تم التحديث": "Updated", "تم": "Done", "كلمة المرور الجديدة (8 حروف على الأقل)": "New password (8+ characters)", "تم استرجاع النسخة": "Backup restored", "الملف غير صالح": "Invalid file", "اسم المستخدم موجود": "Username already exists", "تمت الإضافة": "Added", "فشل الرفع (الحد الأقصى 50MB للملف)": "Upload failed (max 50MB per file)", "رفع الملفات محتاج ربط Supabase (شوف README)": "Uploading files requires Supabase (see README)", "النسخ الاحتياطي": "Backup", "تنزيل نسخة احتياطية": "Download backup", "استرجاع نسخة": "Restore backup", "لا توجد بيانات": "No data", "الوضع الليلي": "Dark mode", "ابدأ": "Start", "أو اكتب الأسئلة هنا: سطر لكل سؤال. اختيارات: السؤال | اختيار | اختيار* (النجمة عند الصح). من غير | يبقى مقالي": "Or type questions here, one per line. MCQ: question | choice | choice* (star marks the correct one). Without | it is an essay question"};const KEYS=Object.keys(EN).filter(k=>k.length>2).sort((a,b)=>b.length-a.length);
+const T=s=>{if(LANG!=='en')return s;const t=s.trim();if(EN[t])return s.replace(t,EN[t]);let o=s;for(const k of KEYS)if(o.includes(k))o=o.split(k).join(EN[k]);return o};
+const AR=/[\u0600-\u06FF]/;
+function tr(){if(LANG!=='en')return;const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(AR.test(n.nodeValue))n.nodeValue=T(n.nodeValue)}document.querySelectorAll('[placeholder],[title]').forEach(e=>{['placeholder','title'].forEach(a=>{const v=e.getAttribute(a);if(v&&AR.test(v))e.setAttribute(a,T(v))})})}
+function setLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==='en'?'ltr':'rtl';$('#lg').textContent=LANG==='en'?'ع':'EN'}
+const gps=()=>new Promise((ok,no)=>navigator.geolocation.getCurrentPosition(ok,no,{enableHighAccuracy:true,timeout:12000}));
+async function shrink(f){if(!f.type.startsWith('image/')||f.size<1e6)return f;try{const b=await createImageBitmap(f),k=Math.min(1,1800/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=b.width*k;c.height=b.height*k;c.getContext('2d').drawImage(b,0,0,c.width,c.height);return await new Promise(r=>c.toBlob(x=>r(new File([x],f.name.replace(/\.\w+$/,'.jpg'),{type:'image/jpeg'})),'image/jpeg',.85))}catch{return f}}
+async function scanQR(cb){const bd='BarcodeDetector' in window?new BarcodeDetector({formats:['qr_code']}):null;if(!bd&&!window.jsQR)return alert(T('قارئ QR مش متاح دلوقتي. افتح الموقع مرة وانت متصل بالنت الأول.'));
+ const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:#000;z-index:99;display:grid;place-items:center';o.innerHTML=`<video playsinline muted style="max-width:100%;max-height:80vh"></video><button class="btn" style="position:absolute;bottom:20px">${T('إلغاء')}</button>`;document.body.append(o);
+ const v=o.querySelector('video');let s,on=true;const stop=()=>{on=false;s&&s.getTracks().forEach(t=>t.stop());o.remove()};o.querySelector('button').onclick=stop;
+ try{s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});v.srcObject=s;await v.play()}catch{stop();return alert(T('الكاميرا مش شغالة — اسمح بيها'))}
+ const c=document.createElement('canvas'),x=c.getContext('2d',{willReadFrequently:true});
+ const tick=async()=>{if(!on)return;try{let t=null;if(v.videoWidth){if(bd){const r=await bd.detect(v);t=r[0]?.rawValue}else{c.width=v.videoWidth;c.height=v.videoHeight;x.drawImage(v,0,0);t=jsQR(x.getImageData(0,0,c.width,c.height).data,c.width,c.height)?.data}if(t&&t.startsWith('TDR:')){stop();return cb(t)}}}catch{}requestAnimationFrame(tick)};tick()}
+async function syncPend(){const P=JSON.parse(localStorage.getItem(PEND)||'[]');if(!P.length)return;await pull();const R=JSON.parse(localStorage.getItem(RES)||'[]');
+ for(const r of P){const u=db.users.find(x=>x.u===r.u&&x.role==='student'&&x.active),d=new Date(r.t).toLocaleDateString('en-CA',{timeZone:'Africa/Cairo'}),l=u&&db.lec.find(x=>x.code===r.code&&x.date===d&&x.groupId===u.group);let m='✓ تم تأكيد حضورك — '+d;
+  if(!u)m='✗ اسم المستخدم غير موجود: '+r.u;else if(!l)m='✗ الكود غير صحيح لمجموعتك';else if(l.loc&&(r.la==null||dist(l.loc.la,l.loc.lo,r.la,r.lo)>l.loc.r+Math.min(r.acc||0,100)))m='✗ مكانك خارج نطاق المحاضرة';else if(!l.present.includes(u.id))l.present.push(u.id);R.push(m)}
+ save();localStorage.setItem(PEND,'[]');localStorage.setItem(RES,JSON.stringify(R))}
+const $=s=>document.querySelector(s),uid=()=>crypto.randomUUID();
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Africa/Cairo'});
+const by=(a,id)=>a.find(x=>x.id===id),nm=(a,id)=>by(a,id)?.name||'—';
+const gs=g=>db.users.filter(u=>u.role==='student'&&u.group===g&&u.active);
+const hash=async(s,p)=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s+p)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+const mk=async(role,name,u,p,group='')=>{const salt=uid();return{id:uid(),u,name,role,salt,hash:await hash(salt,p),active:true,group}};
+let me=null,page='dash',msg='',fails=0,lock=0;
+const ROLE={admin:'أدمن',teacher:'مدرس',student:'طالب'};
+const NAV={admin:[['adash','لوحة الأدمن'],['teachers','المدرسون'],['admins','الأدمن'],['settings','إعدادات الموقع']],
+teacher:[['dash','لوحة المدرس'],['students','الطلاب'],['groups','المجموعات'],['att','الحضور'],['disc','الانضباط'],['hw','الواجبات'],['quiz','الامتحانات'],['grades','الدرجات'],['videos','الفيديوهات'],['ann','الإعلانات'],['sched','الجدول']],
+student:[['home','الرئيسية'],['shw','واجباتي'],['squiz','الامتحانات'],['sgr','درجاتي'],['videos','الفيديوهات'],['ann','الإعلانات'],['attend','تسجيل حضور']]};
+const opt=(a,f=x=>x.name)=>a.map(x=>`<option value="${x.id}">${esc(f(x))}</option>`).join('');
+const fld=(n,l,t='text',o='',v='')=>`<div class="field"><label>${l}</label>${t==='select'?`<select name="${n}">${o}</select>`:t==='area'?`<textarea name="${n}" rows="3"></textarea>`:`<input name="${n}" type="${t}" value="${esc(v)}" required>`}</div>`;
+const tbl=(h,r)=>r.length?`<div class="table-wrap"><table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${r.map(x=>`<tr>${x.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div>`:'<p class="empty">لا توجد بيانات</p>';
+const del=(c,id)=>`<button type="button" class="btn btn-ghost btn-sm" data-act="del:${c}:${id}">حذف</button>`;
+const list=a=>a.length?`<ul>${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="empty">لا يوجد</p>';
+const fo=(n,l,t='text')=>fld(n,l,t).replace(' required','');
+const showAns=(z,a)=>z.qs.map((q,i)=>{const v=a.a[i];return q.type==='mcq'?`<div>${i+1}) <span>${esc(q.opts[v]??'—')}</span> ${q.ans>=0?(v===q.ans?'✓':'✗'):''}</div>`:`<div>${i+1}) ${esc(v||'—')}</div>`}).join('')+(a.gen?`<div>${esc(a.gen)}</div>`:'');
+const acc=(role,title,fk)=>`${head(title)}<form class="panel fg" data-f="${fk}">${fld('n','الاسم')}${fld('u','اسم المستخدم')}${fld('p','كلمة المرور (8+)','password')}<button class="btn">إضافة</button></form>${tbl(['الاسم','المستخدم','الحالة',''],db.users.filter(u=>u.role===role).map(s=>[esc(s.name),esc(s.u),s.active?'نشط':'موقوف',`<button type="button" class="btn btn-ghost btn-sm" data-act="act:${s.id}">${s.active?'إيقاف':'تفعيل'}</button> <button type="button" class="btn btn-ghost btn-sm" data-act="rp:${s.id}">كلمة مرور</button> ${del('users',s.id)}`]))}`;
+const head=t=>`<header><h1>${t}</h1></header>`;
+const pct=s=>{const l=db.lec.filter(x=>x.groupId===s.group&&!x.open);return l.length?Math.round(l.filter(x=>x.present.includes(s.id)).length*100/l.length):null};
+const avg=a=>a.length?Math.round(a.reduce((x,y)=>x+y)*100/a.length):null;
+const scoresOf=sid=>db.exams.filter(e=>e.scores[sid]!=null&&e.max>0).map(e=>e.scores[sid]/e.max);
+
+const P={
+dash(){const t=today(),L=db.lec.filter(x=>x.date===t),pend=db.ans.filter(a=>a.score==null).length;
+ return `${head('لوحة المدرس')}<section class="facts"><div><b>${db.users.filter(u=>u.role==='student').length}</b><span>طالب</span></div><div><b>${db.groups.length}</b><span>مجموعات</span></div><div><b>${L.length}</b><span>محاضرات اليوم</span></div><div><b>${pend}</b><span>إجابات تحتاج تصحيح</span></div></section>
+ <section class="panel"><h2>تسليم الواجبات</h2>${tbl(['الواجب','المجموعة','سلّم','لسه'],db.hw.slice().reverse().slice(0,8).map(h=>{const g=gs(h.g),sd=g.filter(s=>db.subs.some(x=>x.hw===h.id&&x.stu===s.id));return [esc(h.t),esc(nm(db.groups,h.g)),esc(sd.map(s=>s.name).join('، ')||'—'),esc(g.filter(s=>!sd.includes(s)).map(s=>s.name).join('، ')||'—')]}))}</section>`},
+att(){return `${head('الحضور')}<form class="panel fg" data-f="start">${fld('g','المجموعة','select',opt(db.groups))}${fld('r','نطاق الموقع (متر)','number','',150)}<button class="btn">بدء محاضرة وتحديد موقعي</button></form>
+ ${db.lec.slice(-6).reverse().map(l=>`<section class="panel"><h2>${esc(nm(db.groups,l.groupId))} — ${l.date}</h2>${l.open?`<section class="today"><div><div class="num">${l.code}</div><div class="lbl">كود الحضور</div></div><div data-qr="TDR:${l.code}" style="background:#fff;padding:10px;border-radius:8px;width:fit-content"></div></section><p>${l.loc?'📍 الحضور مقيّد بالموقع ('+l.loc.r+' متر)':'⚠ من غير تقييد بالموقع'} <button class="btn btn-sm" data-act="end:${l.id}">إنهاء الحضور</button></p>`:'<span class="badge">انتهت</span>'}
+ ${tbl(['الطالب','الحالة'],gs(l.groupId).map(s=>[esc(s.name),`<button type="button" class="btn btn-ghost btn-sm" data-act="tog:${l.id}:${s.id}">${l.present.includes(s.id)?'حاضر ✓':'غائب'}</button>`]))}</section>`).join('')||'<p class="empty">ابدأ محاضرة وأعطِ الطلاب الكود أو اعرض الـ QR</p>'}`},
+disc(){const m=today().slice(0,7),{warn,expel}=db.cfg[0];
+ const rows=db.users.filter(u=>u.role==='student').map(s=>{const ab=db.lec.filter(l=>l.groupId===s.group&&!l.open&&l.date.startsWith(m)&&!l.present.includes(s.id)).length;
+ return [esc(s.name),ab,!s.active?'مفصول':ab>=expel?'يستحق الفصل':ab>=warn?'إنذار':'منتظم',`<button type="button" class="btn btn-ghost btn-sm" data-act="act:${s.id}">${s.active?'فصل':'إرجاع'}</button>`]});
+ return `${head('الانضباط')}<form class="panel fg" data-f="rule">${fld('warn','إنذار بعد كم غياب','number','',warn)}${fld('expel','فصل بعد كم غياب','number','',expel)}<button class="btn">حفظ القاعدة</button></form>${tbl(['الطالب','غيابات الشهر','الحالة',''],rows)}`},
+hw(){return `${head('الواجبات')}<form class="panel fg" data-f="hw">${fld('g','المجموعة','select',opt(db.groups))}${fld('t','العنوان')}${fld('d','الوصف','area')}${fld('due','آخر موعد','date')}<button class="btn">نشر الواجب</button></form>
+ ${db.hw.slice().reverse().map(h=>{const ss=db.subs.filter(s=>s.hw===h.id);return `<section class="panel"><h2>${esc(h.t)}</h2><p>${esc(h.d)}</p><small>${esc(nm(db.groups,h.g))} — حتى ${esc(h.due)} — ${ss.length} تسليم</small>
+ ${tbl(['الطالب','الإجابة','الدرجة'],ss.map(s=>[esc(nm(db.users,s.stu)),esc(s.text),`<form class="inline-form" data-f="grade"><input type="hidden" name="id" value="${s.id}"><input name="v" type="number" step="any" value="${s.score??''}" style="width:80px"><button class="btn btn-sm">حفظ</button></form>`]))}${del('hw',h.id)}</section>`}).join('')}`},
+shw(){const hs=db.hw.filter(h=>h.g===me.group).reverse();return `${head('واجباتي')}${hs.map(h=>{const s=db.subs.find(x=>x.hw===h.id&&x.stu===me.id);return `<section class="panel"><h2>${esc(h.t)}</h2><p>${esc(h.d)}</p><small>حتى ${esc(h.due)}</small>
+ ${s?`<p>تم التسليم. الدرجة: ${s.score??'لم تُصحح بعد'}</p>`:`<form data-f="sub"><input type="hidden" name="h" value="${h.id}"><div class="field"><textarea name="text" rows="3" required></textarea></div><button class="btn btn-sm">تسليم الواجب</button></form>`}</section>`}).join('')||'<p class="empty">لا توجد واجبات</p>'}`},
+grades(){return `${head('الدرجات')}<form class="panel fg" data-f="exam">${fld('g','المجموعة','select',opt(db.groups))}${fld('t','اسم الاختبار')}${fld('max','الدرجة النهائية','number')}<button class="btn">إضافة اختبار</button></form>
+ ${db.exams.slice().reverse().map(e=>`<section class="panel"><h2>${esc(e.t)} (من ${e.max})</h2><small>${esc(nm(db.groups,e.g))}</small><form data-f="scores"><input type="hidden" name="id" value="${e.id}">${tbl(['الطالب','الدرجة'],gs(e.g).map(s=>[esc(s.name),`<input name="${s.id}" type="number" step="any" value="${e.scores[s.id]??''}" style="width:90px">`]))}<button class="btn btn-sm">حفظ الدرجات</button> ${del('exams',e.id)}</form></section>`).join('')}`},
+sgr(){const r=db.exams.filter(e=>e.scores[me.id]!=null).map(e=>[esc(e.t),`${e.scores[me.id]} / ${e.max}`]);
+ db.subs.filter(s=>s.stu===me.id&&s.score!=null).forEach(s=>r.push([esc('واجب: '+(by(db.hw,s.hw)?.t||'')),String(s.score)]));db.ans.filter(a=>a.stu===me.id&&a.score!=null).forEach(a=>{const z=by(db.quiz,a.quiz);r.push([esc('امتحان: '+(z?.t||'')),a.score+' / '+(z?.max||'')])});return `${head('درجاتي')}<section class="panel">${tbl(['البند','الدرجة'],r)}</section>`},
+videos(){const st=me.role!=='student',vs=db.videos.filter(v=>st||v.g===me.group);
+ return `${head('الفيديوهات')}${st?`<form class="panel fg" data-f="video">${fld('g','المجموعة','select',opt(db.groups))}${fld('t','العنوان')}${fo('url','رابط الفيديو (اختياري)','url')}<div class="field"><label>أو ارفع فيديو من جهازك</label><input type="file" name="file" accept="video/*"></div><button class="btn">إضافة</button></form>`:''}
+ <div class="vgrid">${vs.map(v=>`<section class="panel"><h2>${esc(v.t)}</h2><small>${esc(nm(db.groups,v.g))}</small>${v.file?`<video controls preload="metadata" style="width:100%" src="${esc(v.url)}"></video>`:`<p><a class="link" target="_blank" rel="noopener noreferrer" href="${esc(v.url)}">مشاهدة الفيديو</a></p>`}${st?del('videos',v.id):''}</section>`).join('')||'<p class="empty">لا توجد فيديوهات</p>'}</div>`},
+ann(){const st=me.role!=='student',as=db.ann.filter(a=>st||!a.g||a.g===me.group).slice().reverse();
+ return `${head('الإعلانات')}${st?`<form class="panel fg" data-f="ann">${fld('g','المجموعة','select','<option value="">الكل</option>'+opt(db.groups))}${fld('t','العنوان')}${fld('b','النص','area')}<button class="btn">نشر الإعلان</button></form>`:''}
+ ${as.map(a=>`<section class="panel"><h2>${esc(a.t)}</h2><p>${esc(a.b)}</p><small>${a.d} — ${a.g?esc(nm(db.groups,a.g)):'الكل'}</small> ${st?del('ann',a.id):''}</section>`).join('')||'<p class="empty">لا توجد إعلانات</p>'}`},
+sched(){return `${head('الجدول')}<form class="panel fg" data-f="sched">${fld('g','المجموعة','select',opt(db.groups))}${fld('day','اليوم','select',DAYS.map((x,i)=>`<option value="${i}">${x}</option>`).join(''))}${fld('time','الساعة','time')}${fld('room','المكان')}<button class="btn">إضافة</button></form>
+ ${tbl(['المجموعة','اليوم','الساعة','المكان',''],db.sched.slice().sort((a,b)=>a.day-b.day).map(s=>[esc(nm(db.groups,s.g)),DAYS[s.day],esc(s.time),esc(s.room),del('sched',s.id)]))}`},
+students(){return `${head('الطلاب')}<form class="panel fg" data-f="stu">${fld('n','الاسم')}${fld('u','اسم المستخدم')}${fld('p','كلمة المرور (8+)','password')}${fld('g','المجموعة','select',opt(db.groups))}<button class="btn">إضافة طالب</button></form>
+ ${tbl(['الاسم','المستخدم','المجموعة','الحالة',''],db.users.filter(u=>u.role==='student').map(s=>[esc(s.name),esc(s.u),esc(nm(db.groups,s.group)),s.active?'نشط':'موقوف',`<button type="button" class="btn btn-ghost btn-sm" data-act="act:${s.id}">${s.active?'إيقاف':'تفعيل'}</button> <button type="button" class="btn btn-ghost btn-sm" data-act="rp:${s.id}">كلمة مرور</button> ${del('users',s.id)}`]))}`},
+teachers(){return acc('teacher','المدرسون','tea')},
+groups(){return `${head('المجموعات')}<form class="panel fg" data-f="group">${fld('n','اسم المجموعة')}<button class="btn">إضافة</button></form>${tbl(['المجموعة','عدد الطلاب',''],db.groups.map(g=>[esc(g.name),gs(g.id).length,del('groups',g.id)]))}`},
+home(){const t=today(),a=pct(me),v=avg(scoresOf(me.id)),open=db.hw.filter(h=>h.g===me.group&&h.due>=t&&!db.subs.some(s=>s.hw===h.id&&s.stu===me.id)).length;
+ return `${head('أهلاً '+esc(me.name))}<section class="facts"><div><b>${a==null?'—':a+'%'}</b><span>نسبة الحضور</span></div><div><b>${v==null?'—':v+'%'}</b><span>متوسط الدرجات</span></div><div><b>${open}</b><span>واجبات مطلوبة</span></div></section>
+ <div class="grid2"><section class="panel"><h2>مواعيدي</h2>${list(db.sched.filter(s=>s.g===me.group).sort((x,y)=>x.day-y.day).map(s=>`${DAYS[s.day]} ${s.time} — ${s.room}`))}</section><section class="panel"><h2>آخر الإعلانات</h2>${list(db.ann.filter(x=>!x.g||x.g===me.group).slice(-3).reverse().map(x=>x.t))}</section></div>`},
+attend(){return `${head('تسجيل حضور')}<section class="panel"><p>امسح الـ QR اللي المدرس عارضه. لازم تسمح بالكاميرا والموقع.</p><button class="btn" data-act="scan">📷 مسح QR</button></section><form class="panel fg" data-f="attend">${fld('code','أو اكتب الكود','text')}<button class="btn">تسجيل</button></form>`},
+pw(){return `${head('تغيير كلمة المرور')}<form class="panel fg" data-f="pw">${fld('c','كلمة المرور الحالية','password')}${fld('n','الجديدة (8+)','password')}<button class="btn">حفظ</button></form>`},
+adash(){const n=r=>db.users.filter(u=>u.role===r).length;return `${head('لوحة الأدمن')}<section class="facts"><div><b>${n('teacher')}</b><span>مدرس</span></div><div><b>${n('admin')}</b><span>أدمن</span></div><div><b>${n('student')}</b><span>طالب</span></div><div><b>${db.groups.length}</b><span>مجموعات</span></div></section><section class="panel"><h2>حالة الموقع</h2><p>${ON?'متصل بالسيرفر — البيانات مشتركة بين كل الأجهزة':'تخزين محلي على الجهاز ده بس — اربط Supabase (شوف README)'}</p></section>`},
+settings(){return `${head('إعدادات الموقع')}<section class="panel"><h2>النسخ الاحتياطي</h2><p><button class="btn btn-sm" data-act="exp">تنزيل نسخة احتياطية</button> <button class="btn btn-ghost btn-sm" data-act="imp">استرجاع نسخة</button></p></section><section class="panel"><h2>الحالة</h2><p>${ON?'متصل بالسيرفر':'تخزين محلي'}</p></section>`},
+admins(){return acc('admin','الأدمن','adm')},
+quiz(){return `${head('الامتحانات الأونلاين')}<form class="panel stack-wide" data-f="quiz"><div class="fg">${fld('g','المجموعة','select',opt(db.groups))}${fld('t','عنوان الامتحان')}${fld('max','الدرجة النهائية','number')}</div>${fo('ins','تعليمات (اختياري)','area')}
+ <div class="field"><label>صوّر ورقة الامتحان أو ارفع صورها (تظهر للطالب)</label><input type="file" name="file" accept="image/*" multiple></div>
+ <div class="fg">${fo('mc','عدد الأسئلة الاختيارية (أ ب ج د)','number')}${fo('es','عدد الأسئلة المقالية','number')}${fo('key','الإجابات الصحيحة للاختياري (اختياري) مثال: أ ب ج د')}</div>
+ ${fo('q','أو اكتب الأسئلة هنا: سطر لكل سؤال. اختيارات: السؤال | اختيار | اختيار* (النجمة عند الصح). من غير | يبقى مقالي','area')}<button class="btn">نشر الامتحان</button></form>
+ ${db.quiz.slice().reverse().map(z=>{const as=db.ans.filter(a=>a.quiz===z.id),kd=z.qs.filter(x=>x.type==='mcq'&&x.ans>=0).length;return `<section class="panel"><h2>${esc(z.t)}</h2><small>${esc(nm(db.groups,z.g))} — ${as.length} إجابة — ${z.open?'مفتوح':'مقفول'}</small>
+ ${tbl(['الطالب','الإجابات','تلقائي','الدرجة'],as.map(a=>[esc(nm(db.users,a.stu)),showAns(z,a),kd?`${a.auto} / ${kd}`:'—',`<form class="inline-form" data-f="qgrade"><input type="hidden" name="id" value="${a.id}"><input name="v" type="number" step="any" value="${a.score??''}" style="width:80px"><button class="btn btn-sm">حفظ</button></form>`]))}
+ <button type="button" class="btn btn-ghost btn-sm" data-act="qopen:${z.id}">${z.open?'قفل':'فتح'}</button> ${del('quiz',z.id)}</section>`}).join('')}`},
+squiz(){const zs=db.quiz.filter(z=>z.g===me.group).reverse();return `${head('الامتحانات')}${zs.map(z=>{const a=db.ans.find(x=>x.quiz===z.id&&x.stu===me.id),im=(z.imgs||[z.img]).filter(Boolean);return `<section class="panel"><h2>${esc(z.t)}</h2>${a?`<p>تم التسليم. الدرجة: ${a.score==null?'لم تُصحح بعد':a.score+' / '+z.max}</p>`:!z.open?'<p>الامتحان مقفول</p>':`<form data-f="qans"><input type="hidden" name="id" value="${z.id}"><p>${esc(z.ins)}</p><div class="sheetimgs">${im.map(u=>`<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt=""></a>`).join('')}</div>${z.qs.map((x,i)=>`<div class="field"><label>${i+1}) ${esc(x.t)}</label>${x.type==='mcq'?x.opts.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${esc(o)}</label>`).join(x.sheet?' &nbsp; ':'<br>'):`<textarea name="q${i}" rows="3"></textarea>`}</div>`).join('')}${z.qs.length?'':'<div class="field"><label>إجابتك</label><textarea name="gen" rows="5"></textarea></div>'}<button class="btn">تسليم الامتحان</button></form>`}</section>`}).join('')||'<p class="empty">لا توجد امتحانات</p>'}`}
+};
+
+function login(note=''){const who=JSON.parse(localStorage.getItem(WHO)||'{}'),res=JSON.parse(localStorage.getItem(RES)||'[]');localStorage.removeItem(RES);const first=!OFFL&&!db.users.length;
+ const off=`<div class="offbox"><h3>تسجيل حضور بدون نت</h3><p class="small">اكتب اسمك واسم المستخدم، وصوّر الـ QR. هيتأكد حضورك أول ما النت يرجع.</p><input id="on" placeholder="الاسم" value="${esc(who.n||'')}"><input id="ou" dir="ltr" placeholder="اسم المستخدم" value="${esc(who.u||'')}"><button type="button" class="btn btn-ghost" data-act="offscan">📷 صوّر QR (بدون نت)</button><p id="offmsg" class="small"></p></div>`;
+ const ios=/iphone|ipad/i.test(navigator.userAgent)&&!navigator.standalone;
+ const ins=inst?'<p><button type="button" class="btn btn-ghost btn-sm" data-act="install">📲 تثبيت التطبيق على الشاشة</button></p>':ios?'<p class="small">للتثبيت على الآيفون: مشاركة ← إضافة إلى الشاشة الرئيسية</p>':'';
+ const form=OFFL?'<div class="flash bad">مفيش اتصال بالإنترنت. تقدر تسجل حضورك بالـ QR من تحت.</div>':`<form class="login-form" data-f="${first?'setup':'login'}"><h2>${first?'إعداد أول مرة — حساب الأدمن':'تسجيل الدخول'}</h2>${first?fld('n','الاسم')+fld('u','اسم المستخدم'):fld('u','اسم المستخدم')}${fld('p',first?'كلمة المرور (8 حروف+)':'كلمة المرور','password')}<p class="error">${esc(note)}</p><button class="btn">${first?'إنشاء حساب الأدمن':'دخول'}</button></form>`;
+ $('#root').innerHTML=`<main class="login"><section class="login-brand"><div style="width:84px;margin-bottom:14px">${LOGO()}</div><h1>تدريس</h1><p>منصة المدرس والطالب</p></section><section class="login-form-wrap"><div style="width:min(100%,420px)">${res.map(r=>`<div class="flash ok">${esc(r)}</div>`).join('')}${form}${first?'':off}${ins}</div></section></main>`;tr()}
+function app(){const pg=(NAV[me.role].some(n=>n[0]===page)||page==='pw')?page:NAV[me.role][0][0];$('#root').innerHTML=`<div class="shell"><aside class="sidebar"><div class="brand"><span style="width:34px;display:inline-block;vertical-align:middle;margin-inline-end:8px">${LOGO(96)}</span>تدريس</div><nav>${NAV[me.role].map(([k,t])=>`<a href="#" class="nav-item ${k===pg?'active':''}" data-go="${k}">${t}</a>`).join('')}</nav>
+ <div class="sidebar-foot"><span>${esc(me.name)} — ${ROLE[me.role]}</span><a class="small" href="#" data-go="pw">تغيير كلمة المرور</a><button class="btn btn-ghost btn-sm" data-act="out">خروج</button></div></aside>
+ <div class="main-wrap"><main class="main">${msg?`<div class="flash ok">${esc(msg)}</div>`:''}${P[pg]()}</main></div></div>`;msg='';
+ try{document.querySelectorAll('[data-qr]').forEach(el=>new QRCode(el,{text:el.dataset.qr,width:160,height:160}))}catch{};tr()}
+const done=m=>{msg=m;save();app()};
+async function addU(role,d){const u=d.u.trim().toLowerCase();if(db.users.some(x=>x.u===u))return done('اسم المستخدم موجود');if(d.p.length<8)return done('كلمة المرور 8 حروف على الأقل');db.users.push(await mk(role,d.n.trim(),u,d.p,d.g||''));done('تمت الإضافة')}
+const push=(c,o,m='تمت الإضافة')=>{db[c].push({id:uid(),...o});done(m)};
+const need=()=>done('اعمل مجموعة الأول');
+
+const H={
+async login(d){if(lock>Date.now())return login('محاولات كتير، استنى نص دقيقة');if(ON)await pull().catch(()=>{});const u=db.users.find(x=>x.u===d.u.trim().toLowerCase());
+ if(!u||u.hash!==await hash(u.salt,d.p)){if(++fails>=5){lock=Date.now()+3e4;fails=0}return login('اسم المستخدم أو كلمة المرور غلط')}
+ if(!u.active)return login('الحساب موقوف');fails=0;me=u;localStorage.setItem(SS,u.id);page=NAV[u.role][0][0];app()},
+async setup(d){if(ON)await pull().catch(()=>{});if(db.users.length)return login();const u=d.u.trim().toLowerCase();if(!u||d.p.length<8)return login('كلمة المرور 8 حروف على الأقل');db.users.push(await mk('admin',d.n.trim()||u,u,d.p));save();login('تم الإنشاء، سجّل الدخول')},
+stu:d=>addU('student',d),tea:d=>addU('teacher',d),adm:d=>addU('admin',d),
+group:d=>push('groups',{name:d.n.trim()}),
+async start(d){if(!d.g)return need();let loc=null;try{const p=await new Promise((ok,no)=>navigator.geolocation.getCurrentPosition(ok,no,{enableHighAccuracy:true,timeout:12000}));loc={la:p.coords.latitude,lo:p.coords.longitude,r:+d.r||150}}catch{}
+ db.lec.push({id:uid(),groupId:d.g,date:today(),code:String(crypto.getRandomValues(new Uint32Array(1))[0]%900000+100000),open:true,present:[],loc});done(loc?'بدأت المحاضرة وتم تحديد موقعك':'بدأت المحاضرة بدون تقييد موقع (فعّل GPS)')},
+rule(d){Object.assign(db.cfg[0],{warn:+d.warn,expel:+d.expel});done('تم الحفظ')},
+hw:d=>d.g?push('hw',{g:d.g,t:d.t,d:d.d,due:d.due},'تم نشر الواجب'):need(),
+grade(d){by(db.subs,d.id).score=d.v===''?null:+d.v;done('تم حفظ الدرجة')},
+sub(d){const h=by(db.hw,d.h);if(h.due<today())return done('انتهى موعد التسليم');db.subs.push({id:uid(),hw:d.h,stu:me.id,text:d.text});done('تم التسليم')},
+exam:d=>d.g?push('exams',{g:d.g,t:d.t,max:+d.max,scores:{}}):need(),
+scores(d){const e=by(db.exams,d.id);for(const[k,v]of Object.entries(d))if(k!=='id'&&v!=='')e.scores[k]=+v;done('تم حفظ الدرجات')},
+async video(d){if(!d.g)return need();let url=(d.url||'').trim(),file=false;try{if(d.file&&d.file.size){url=await upl(d.file,'video');file=true}else if(!/^https?:\/\//i.test(url))return done('حط رابط أو اختار فيديو من جهازك')}catch(e){return done(e.message)}push('videos',{g:d.g,t:d.t,url,file})},
+async quiz(d){if(!d.g)return need();const imgs=[];try{for(const f of d.files||[])imgs.push(await upl(await shrink(f),'img'))}catch(e){return done(e.message)}
+ const qs=(d.q||'').split('\n').map(x=>x.trim()).filter(Boolean).map(l=>{const p=l.split('|').map(x=>x.trim());if(p.length<2)return{t:p[0],type:'essay'};return{t:p[0],type:'mcq',opts:p.slice(1).map(x=>x.replace(/\*$/,'').trim()),ans:p.slice(1).findIndex(x=>x.endsWith('*'))}});
+ const M={'أ':0,'ا':0,a:0,'ب':1,b:1,'ج':2,c:2,'د':3,d:3},key=(d.key||'').trim().split(/[\s,،]+/).filter(Boolean).map(k=>M[k.toLowerCase()]);
+ for(let i=0;i<(+d.mc||0);i++)qs.push({t:'',type:'mcq',opts:['أ','ب','ج','د'],ans:key[i]??-1,sheet:1});for(let i=0;i<(+d.es||0);i++)qs.push({t:'',type:'essay'});
+ if(!qs.length)return done('حدد عدد الأسئلة أو اكتبها');push('quiz',{g:d.g,t:d.t,max:+d.max,ins:d.ins||'',imgs,qs,open:true},'تم نشر الامتحان')},
+qans(d){const z=by(db.quiz,d.id);if(!z.open||db.ans.some(a=>a.quiz===z.id&&a.stu===me.id))return done('مش متاح');const a={};let auto=0;z.qs.forEach((x,i)=>{const v=d['q'+i];if(x.type==='mcq'){a[i]=v===undefined?null:+v;if(a[i]===x.ans)auto++}else a[i]=v||''});db.ans.push({id:uid(),quiz:z.id,stu:me.id,a,gen:d.gen||'',auto,score:null});done('تم تسليم الامتحان')},
+qgrade(d){by(db.ans,d.id).score=d.v===''?null:+d.v;done('تم حفظ الدرجة')},
+ann:d=>push('ann',{g:d.g,t:d.t,b:d.b,d:today()},'تم نشر الإعلان'),
+sched:d=>d.g?push('sched',{g:d.g,day:+d.day,time:d.time,room:d.room}):need(),
+async attend(d){if(ON)await pull().catch(()=>{});const l=db.lec.find(x=>x.open&&x.code===String(d.code).trim()&&x.groupId===me.group);if(!l)return done('الكود غلط أو الحضور مقفول');
+ if(l.loc){let p;try{p=await new Promise((ok,no)=>navigator.geolocation.getCurrentPosition(ok,no,{enableHighAccuracy:true,timeout:15000}))}catch{return done('فعّل الموقع (GPS) وحاول تاني')}
+  const m=dist(l.loc.la,l.loc.lo,p.coords.latitude,p.coords.longitude);if(m>l.loc.r+Math.min(p.coords.accuracy||0,100))return done('انت بعيد عن مكان المحاضرة ('+Math.round(m)+' متر)')}
+ if(!l.present.includes(me.id))l.present.push(me.id);done('تم تسجيل حضورك')},
+async pw(d){if(me.hash!==await hash(me.salt,d.c))return done('كلمة المرور الحالية غلط');if(d.n.length<8)return done('الجديدة 8 حروف على الأقل');me.salt=uid();me.hash=await hash(me.salt,d.n);done('تم تغيير كلمة المرور')}
+};
+const A={
+out(){localStorage.removeItem(SS);me=null;login()},
+del(c,id){if(me.role==='student'||id===me.id||!confirm(T('متأكد من الحذف؟')))return;db[c]=db[c].filter(x=>x.id!==id);done('تم الحذف')},
+end(id){by(db.lec,id).open=false;done('تم إنهاء الحضور')},
+tog(l,s){const p=by(db.lec,l).present,i=p.indexOf(s);i<0?p.push(s):p.splice(i,1);done('')},
+qopen(id){const z=by(db.quiz,id);z.open=!z.open;done('تم')},
+act(id){if(id===me.id)return;const u=by(db.users,id);u.active=!u.active;done('تم التحديث')},
+async rp(id){const p=prompt(T('كلمة المرور الجديدة (8 حروف على الأقل)'));if(!p||p.length<8)return;const u=by(db.users,id);u.salt=uid();u.hash=await hash(u.salt,p);done('تم تغيير كلمة المرور')},
+exp(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db)],{type:'application/json'}));a.download='moarekh-backup-'+today()+'.json';a.click()},
+imp(){const i=document.createElement('input');i.type='file';i.accept='.json';i.onchange=async()=>{try{const d=JSON.parse(await i.files[0].text());if(!Array.isArray(d.users))throw 0;CO.forEach(c=>d[c]&&(db[c]=d[c]));done('تم استرجاع النسخة')}catch{done('الملف غير صالح')}};i.click()},
+scan(){scanQR(t=>H.attend({code:t.slice(4)}))},
+async offscan(){const n=$('#on').value.trim(),u=$('#ou').value.trim().toLowerCase(),m=$('#offmsg'),say=t=>m.textContent=T(t);if(!n||!u)return say('اكتب اسمك واسم المستخدم الأول');localStorage.setItem(WHO,JSON.stringify({n,u}));
+ scanQR(async t=>{let loc={};try{const p=await gps();loc={la:p.coords.latitude,lo:p.coords.longitude,acc:p.coords.accuracy}}catch{}
+  const P=JSON.parse(localStorage.getItem(PEND)||'[]');P.push({n,u,code:t.slice(4),t:Date.now(),...loc});localStorage.setItem(PEND,JSON.stringify(P));
+  if(navigator.onLine&&!OFFL){await syncPend().catch(()=>{});login()}else say('تم حفظ حضورك. هيتأكد أول ما النت يرجع.')})},
+async install(){if(inst){inst.prompt();inst=null;login()}}
+};
+document.addEventListener('click',async e=>{if(e.target.closest('#lg')){LANG=LANG==='en'?'ar':'en';localStorage.setItem('moarekh_lang',LANG);setLang();return me&&!OFFL?app():login()}
+ if(e.target.closest('#tt')){const t=document.documentElement.dataset.theme==='dark'?'light':'dark';localStorage.setItem('moarekh_theme',t);document.documentElement.dataset.theme=t;return}
+ const a=e.target.closest('[data-go],[data-act]');if(!a)return;e.preventDefault();
+ if(a.dataset.go){page=a.dataset.go;if(ON)await pull().catch(()=>{});return me?app():login()}
+ const[k,x,y]=a.dataset.act.split(':');A[k]&&await A[k](x,y)});
+document.addEventListener('submit',async e=>{const f=e.target.closest('form[data-f]');if(!f)return;e.preventDefault();const fd=new FormData(f),d=Object.fromEntries(fd);d.files=fd.getAll('file').filter(x=>x.size);const h=H[f.dataset.f];h&&await h(d)});
+setLang();
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();inst=e;if(!me)login()});
+addEventListener('online',async()=>{if(OFFL)return location.reload();await syncPend().catch(()=>{})});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+(async()=>{me=localStorage.getItem(SS)?{id:localStorage.getItem(SS)}:null;try{await pull()}catch{OFFL=true}
+ if(!OFFL)await syncPend().catch(()=>{});me&&me.hash&&!OFFL?(page=NAV[me.role][0][0],app()):login()})();
+</script>
+</body>
+</html>
